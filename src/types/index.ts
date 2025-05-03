@@ -1,46 +1,63 @@
 /**
- * Interface que representa uma categoria de produto
+ * Interface que representa uma categoria no sistema
  */
-export interface Categoria {
+export interface Category {
 	id: string;
-	nome: string;
-	descricao?: string;
+	name: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
 
 /**
- * Interface que representa um produto
+ * Interface que representa um produto no sistema
  */
-export interface Produto {
+export interface Product {
 	id: string;
-	nome: string;
-	descricao?: string;
-	preco: number;
-	quantidade: number;
-	categoriaId: string;
-	categoria: Categoria;
+	name: string;
+	price: number;
 	createdAt: Date;
 	updatedAt: Date;
 }
 
 /**
- * Enum que representa os tipos de movimentação
+ * Interface que representa uma imagem de produto no sistema
  */
-export enum TipoMovimentacao {
-	ENTRADA = "ENTRADA",
-	SAIDA = "SAIDA",
+export interface ProductImage {
+	id: string;
+	productId: string;
+	imageUrl: string;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 /**
- * Interface que representa uma movimentação de estoque
+ * Interface que representa o relacionamento entre produto e categoria
  */
-export interface Movimentacao {
+export interface ProductCategory {
 	id: string;
-	tipo: TipoMovimentacao;
-	quantidade: number;
-	produtoId: string;
-	produto: Produto;
-	observacao?: string;
+	productId: string;
+	categoryId: string;
+}
+
+/**
+ * Interface que representa um usuário no sistema
+ */
+export interface User {
+	id: string;
+	name: string;
+	email: string;
+	password: string;
 	createdAt: Date;
+	updatedAt: Date;
+}
+
+/**
+ * Interface que representa o estoque de um produto
+ */
+export interface Stock {
+	id: string;
+	productId: string;
+	quantity: number;
+	createdAt: Date;
+	updatedAt: Date;
 }
