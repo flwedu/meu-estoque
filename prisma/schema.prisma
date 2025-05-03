@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/**
+ * Modelo que representa uma categoria de produto
+ */
+model Categoria {
+  id          String    @id @default(uuid())
+  nome        String
+  descricao   String?
+  produtos    Produto[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("categorias")
+}
+
+/**
+ * Modelo que representa um produto no sistema
+ */
+model Produto {
+  id          String    @id @default(uuid())
+  nome        String
+  descricao   String?
+  preco       Decimal
+  quantidade  Int       @default(0)
+  categoriaId String
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+  movimentacoes Movimentacao[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("produtos")
+}
+
+/**
+ * Modelo que representa uma movimentação de estoque
+ */
+model Movimentacao {
+  id          String    @id @default(uuid())
+  tipo        TipoMovimentacao
+  quantidade  Int
+  produtoId   String
+  produto     Produto   @relation(fields: [produtoId], references: [id])
+  observacao  String?
+  createdAt   DateTime  @default(now())
+
+  @@map("movimentacoes")
+}
+
+/**
+ * Enum que define os tipos de movimentação possíveis
+ */
+enum TipoMovimentacao {
+  ENTRADA
+  SAIDA
+} 
