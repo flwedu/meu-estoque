@@ -23,8 +23,8 @@ const sidebarItems = [
 		icon: Package,
 	},
 	{
-		title: "Estoque",
-		href: "/stock",
+		title: "Movimentações",
+		href: "/moviment",
 		icon: Boxes,
 	},
 ];
