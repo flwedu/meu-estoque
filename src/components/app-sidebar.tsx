@@ -8,17 +8,24 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { PackageOpen } from "lucide-react";
+import { Boxes, Home, Package } from "lucide-react";
+import Link from "next/link";
+
 const sidebarItems = [
+	{
+		title: "Dashboard",
+		href: "/",
+		icon: Home,
+	},
 	{
 		title: "Produtos",
 		href: "/products",
-		icon: PackageOpen,
+		icon: Package,
 	},
 	{
 		title: "Estoque",
 		href: "/stock",
-		icon: PackageOpen,
+		icon: Boxes,
 	},
 ];
 
@@ -33,10 +40,10 @@ export function AppSidebar() {
 							{sidebarItems.map((item) => (
 								<SidebarMenuItem key={item.href}>
 									<SidebarMenuButton asChild>
-										<a href={item.href}>
+										<Link href={item.href}>
 											<item.icon />
 											<span>{item.title}</span>
-										</a>
+										</Link>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
 							))}
