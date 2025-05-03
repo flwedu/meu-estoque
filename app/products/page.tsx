@@ -29,7 +29,7 @@ export default function ProductsPage() {
 	const products: Product[] = [];
 
 	return (
-		<div className="space-y-6 p-6">
+		<div className="space-y-6 p-6 w-full">
 			<div className="flex justify-between items-center">
 				<h1 className="font-bold text-3xl">Produtos</h1>
 				<button
