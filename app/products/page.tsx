@@ -40,7 +40,7 @@ export default async function ProductsPage(): Promise<JSX.Element> {
 							<TableHeader>
 								<TableRow>
 									<TableHead className="w-[10%]">Imagem</TableHead>
-									<TableHead className="w-[30%]">Nome</TableHead>
+									<TableHead className="max-w-[30%]">Nome</TableHead>
 									<TableHead className="w-[15%] text-right">Preço</TableHead>
 									<TableHead className="w-[15%] text-right">
 										Categorias
