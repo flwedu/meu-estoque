@@ -7,27 +7,17 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import type { Movement } from "@/types";
 import { ArrowDownToLine, ArrowUpFromLine, Boxes } from "lucide-react";
-
-/**
- * Interface que representa uma movimentação de estoque
- */
-interface StockMovement {
-	id: string;
-	productName: string;
-	type: "entrada" | "saida";
-	quantity: number;
-	date: Date;
-	description: string;
-}
+import type { JSX } from "react";
 
 /**
  * Página que exibe o gerenciamento de estoque
  * @returns {JSX.Element} Página de gerenciamento de estoque
  */
-export default function StockPage() {
+export default function MovementsPage(): JSX.Element {
 	// TODO: Buscar movimentações do banco de dados
-	const movements: StockMovement[] = [];
+	const movements: Movement[] = [];
 
 	return (
 		<div className="space-y-6 p-6">
@@ -108,7 +98,6 @@ export default function StockPage() {
 										Quantidade
 									</TableHead>
 									<TableHead className="w-[20%]">Data</TableHead>
-									<TableHead className="w-[25%]">Descrição</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>
@@ -125,17 +114,17 @@ export default function StockPage() {
 									movements.map((movement) => (
 										<TableRow key={movement.id}>
 											<TableCell className="font-medium">
-												{movement.productName}
+												{movement.product.name}
 											</TableCell>
 											<TableCell>
 												<span
 													className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
-														movement.type === "entrada"
+														movement.quantity > 0
 															? "bg-green-100 text-green-700"
 															: "bg-red-100 text-red-700"
 													}`}
 												>
-													{movement.type === "entrada" ? "Entrada" : "Saída"}
+													{movement.quantity > 0 ? "Entrada" : "Saída"}
 												</span>
 											</TableCell>
 											<TableCell className="text-right">
@@ -148,9 +137,8 @@ export default function StockPage() {
 													year: "numeric",
 													hour: "2-digit",
 													minute: "2-digit",
-												}).format(movement.date)}
+												}).format(movement.createdAt)}
 											</TableCell>
-											<TableCell>{movement.description}</TableCell>
 										</TableRow>
 									))
 								)}
