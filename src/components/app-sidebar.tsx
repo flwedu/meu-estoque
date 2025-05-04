@@ -8,7 +8,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Boxes, Home, Package } from "lucide-react";
+import { ArrowLeftRight, Boxes, Home, Package } from "lucide-react";
 import Link from "next/link";
 
 const sidebarItems = [
@@ -25,6 +25,11 @@ const sidebarItems = [
 	{
 		title: "Movimentações",
 		href: "/movements",
+		icon: ArrowLeftRight,
+	},
+	{
+		title: "Estoque",
+		href: "/stock",
 		icon: Boxes,
 	},
 ];
