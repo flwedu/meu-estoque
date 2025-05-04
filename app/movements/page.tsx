@@ -7,7 +7,13 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import type { Movement } from "@/types";
+import {
+	getEntriesCount,
+	getExitsCount,
+	getMovements,
+	getStockSum,
+} from "@/queries/movements";
+import { format } from "date-fns";
 import { ArrowDownToLine, ArrowUpFromLine, Boxes } from "lucide-react";
 import type { JSX } from "react";
 
@@ -15,9 +21,11 @@ import type { JSX } from "react";
  * Página que exibe o gerenciamento de estoque
  * @returns {JSX.Element} Página de gerenciamento de estoque
  */
-export default function MovementsPage(): JSX.Element {
-	// TODO: Buscar movimentações do banco de dados
-	const movements: Movement[] = [];
+export default async function MovementsPage(): Promise<JSX.Element> {
+	const movements = await getMovements();
+	const stock = await getStockSum();
+	const entries = await getEntriesCount();
+	const exits = await getExitsCount();
 
 	return (
 		<div className="space-y-6 p-6">
@@ -29,14 +37,14 @@ export default function MovementsPage(): JSX.Element {
 						className="flex items-center gap-2 bg-primary hover:bg-primary/90 px-4 py-2 rounded-md text-primary-foreground"
 					>
 						<ArrowDownToLine className="w-4 h-4" />
-						Entrada
+						Registrar Entrada
 					</button>
 					<button
 						type="button"
-						className="flex items-center gap-2 bg-destructive hover:bg-destructive/90 px-4 py-2 rounded-md text-destructive-foreground"
+						className="flex items-center gap-2 bg-destructive hover:bg-destructive/90 px-4 py-2 rounded-md text-destructive-foreground text-white"
 					>
 						<ArrowUpFromLine className="w-4 h-4" />
-						Saída
+						Registrar Saída
 					</button>
 				</div>
 			</div>
@@ -50,7 +58,7 @@ export default function MovementsPage(): JSX.Element {
 						<Boxes className="w-4 h-4 text-muted-foreground" />
 					</CardHeader>
 					<CardContent>
-						<div className="font-bold text-2xl">0</div>
+						<div className="font-bold text-2xl">{stock}</div>
 						<p className="text-muted-foreground text-xs">
 							Unidades disponíveis
 						</p>
@@ -64,7 +72,7 @@ export default function MovementsPage(): JSX.Element {
 						<ArrowDownToLine className="w-4 h-4 text-muted-foreground" />
 					</CardHeader>
 					<CardContent>
-						<div className="font-bold text-2xl">0</div>
+						<div className="font-bold text-2xl">{entries}</div>
 						<p className="text-muted-foreground text-xs">Unidades recebidas</p>
 					</CardContent>
 				</Card>
@@ -74,7 +82,7 @@ export default function MovementsPage(): JSX.Element {
 						<ArrowUpFromLine className="w-4 h-4 text-muted-foreground" />
 					</CardHeader>
 					<CardContent>
-						<div className="font-bold text-2xl">0</div>
+						<div className="font-bold text-2xl">{exits}</div>
 						<p className="text-muted-foreground text-xs">Unidades retiradas</p>
 					</CardContent>
 				</Card>
@@ -131,13 +139,7 @@ export default function MovementsPage(): JSX.Element {
 												{movement.quantity}
 											</TableCell>
 											<TableCell>
-												{new Intl.DateTimeFormat("pt-BR", {
-													day: "2-digit",
-													month: "2-digit",
-													year: "numeric",
-													hour: "2-digit",
-													minute: "2-digit",
-												}).format(movement.createdAt)}
+												{format(movement.createdAt, "dd/MM/yyyy HH:mm")}
 											</TableCell>
 										</TableRow>
 									))

@@ -7,7 +7,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import type { Product } from "@/types";
+import prisma from "@/lib/prisma";
 import { Package } from "lucide-react";
 import type { JSX } from "react";
 
@@ -15,9 +15,12 @@ import type { JSX } from "react";
  * Página que exibe a lista de produtos cadastrados
  * @returns {JSX.Element} Página com tabela de produtos
  */
-export default function ProductsPage(): JSX.Element {
-	// TODO: Buscar produtos do banco de dados
-	const products: Product[] = [];
+export default async function ProductsPage(): Promise<JSX.Element> {
+	const products = await prisma.product.findMany({
+		include: {
+			images: true,
+		},
+	});
 
 	return (
 		<div className="space-y-6 p-6 w-full">
@@ -68,7 +71,7 @@ export default function ProductsPage(): JSX.Element {
 												{new Intl.NumberFormat("pt-BR", {
 													style: "currency",
 													currency: "BRL",
-												}).format(product.price)}
+												}).format(Number(product.price))}
 											</TableCell>
 											<TableCell className="text-right">
 												<button
