@@ -32,7 +32,7 @@ export default async function MovementsPage(): Promise<JSX.Element> {
 				<MovementForm />
 			</div>
 
-			<div className="gap-6 grid md:grid-cols-2">
+			<div className="gap-6 grid lg:grid-cols-2">
 				<Card>
 					<CardHeader>
 						<CardTitle className="flex items-center gap-2">
