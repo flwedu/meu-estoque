@@ -25,6 +25,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import { CategoriesSearchCombobox } from "./categories-search-combobox";
 
 /**
  * Schema de validação para o formulário de produtos
@@ -32,6 +33,7 @@ import * as z from "zod";
 const productFormSchema = z.object({
 	name: z.string().min(1, "O nome do produto é obrigatório"),
 	price: z.string().min(1, "O preço é obrigatório"),
+	categoryIds: z.array(z.string()).min(1, "Selecione pelo menos uma categoria"),
 });
 
 type ProductFormValues = z.infer<typeof productFormSchema>;
@@ -44,6 +46,7 @@ interface ProductFormProps {
 		id: string;
 		name: string;
 		price: number;
+		categories?: { id: string }[];
 	};
 	/**
 	 * Tipo de ação do formulário
@@ -78,6 +81,7 @@ export function ProductForm({
 						currency: "BRL",
 					}).format(product.price)
 				: "",
+			categoryIds: product?.categories?.map((category) => category.id) ?? [],
 		},
 	});
 
@@ -195,6 +199,20 @@ export function ProductForm({
 											}}
 										/>
 									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="categoryIds"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Categorias</FormLabel>
+									<CategoriesSearchCombobox
+										value={field.value}
+										onChange={field.onChange}
+									/>
 									<FormMessage />
 								</FormItem>
 							)}

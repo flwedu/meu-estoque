@@ -14,6 +14,7 @@ describe("ProductForm", () => {
 		expect(screen.getByText("Novo Produto")).toBeInTheDocument();
 		expect(screen.getByLabelText("Nome")).toBeInTheDocument();
 		expect(screen.getByLabelText("Preço")).toBeInTheDocument();
+		expect(screen.getByLabelText("Categorias")).toBeInTheDocument();
 		expect(
 			screen.getByRole("button", { name: "Cadastrar" }),
 		).toBeInTheDocument();
@@ -30,11 +31,19 @@ describe("ProductForm", () => {
 				screen.getByText("O nome do produto é obrigatório"),
 			).toBeInTheDocument();
 			expect(screen.getByText("O preço é obrigatório")).toBeInTheDocument();
+			expect(
+				screen.getByText("Selecione pelo menos uma categoria"),
+			).toBeInTheDocument();
 		});
 	});
 
 	it("deve enviar o formulário com sucesso", async () => {
-		const mockResponse = { id: "1", name: "Produto Teste", price: 10.99 };
+		const mockResponse = {
+			id: "1",
+			name: "Produto Teste",
+			price: 10.99,
+			categoryIds: ["1", "2"],
+		};
 		(global.fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce(
 			{
 				ok: true,
@@ -46,10 +55,12 @@ describe("ProductForm", () => {
 
 		const nameInput = screen.getByLabelText("Nome");
 		const priceInput = screen.getByLabelText("Preço");
+		const categoryInput = screen.getByLabelText("Categorias");
 		const submitButton = screen.getByRole("button", { name: "Cadastrar" });
 
 		fireEvent.change(nameInput, { target: { value: "Produto Teste" } });
 		fireEvent.change(priceInput, { target: { value: "10,99" } });
+		fireEvent.change(categoryInput, { target: { value: ["1", "2"] } });
 		fireEvent.click(submitButton);
 
 		await waitFor(() => {
@@ -61,6 +72,7 @@ describe("ProductForm", () => {
 				body: JSON.stringify({
 					name: "Produto Teste",
 					price: 10.99,
+					categoryIds: ["1", "2"],
 				}),
 			});
 		});
@@ -75,10 +87,12 @@ describe("ProductForm", () => {
 
 		const nameInput = screen.getByLabelText("Nome");
 		const priceInput = screen.getByLabelText("Preço");
+		const categoryInput = screen.getByLabelText("Categorias");
 		const submitButton = screen.getByRole("button", { name: "Cadastrar" });
 
 		fireEvent.change(nameInput, { target: { value: "Produto Teste" } });
 		fireEvent.change(priceInput, { target: { value: "10,99" } });
+		fireEvent.change(categoryInput, { target: { value: ["1", "2"] } });
 		fireEvent.click(submitButton);
 
 		await waitFor(() => {

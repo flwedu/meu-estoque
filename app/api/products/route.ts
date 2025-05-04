@@ -14,6 +14,32 @@ export async function POST(request: Request): Promise<NextResponse> {
 			data: {
 				name: body.name,
 				price: body.price,
+				categories: {
+					create: body.categoryIds.map((categoryId: string) => ({
+						category: {
+							connect: {
+								id: categoryId,
+							},
+						},
+					})),
+				},
+			},
+			include: {
+				images: true,
+				categories: {
+					include: {
+						ProductCategory: {
+							select: {
+								category: {
+									select: {
+										id: true,
+										name: true,
+									},
+								},
+							},
+						},
+					},
+				},
 			},
 		});
 
@@ -21,7 +47,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 	} catch (error) {
 		console.error(error);
 		return NextResponse.json(
-			{ error: "Erro ao cadastrar produto" },
+			{ error: "Erro ao criar produto" },
 			{ status: 500 },
 		);
 	}
@@ -35,33 +61,36 @@ export async function POST(request: Request): Promise<NextResponse> {
 export async function GET(request: Request): Promise<NextResponse> {
 	try {
 		const { searchParams } = new URL(request.url);
-		const name = searchParams.get("name") ?? "";
-
-		if (!name) {
-			const products = await prisma.product.findMany({
-				take: 10,
-				orderBy: {
-					name: "asc",
-				},
-				select: {
-					id: true,
-					name: true,
-				},
-			});
-			return NextResponse.json(products);
-		}
+		const name = searchParams.get("name");
 
 		const products = await prisma.product.findMany({
-			where: {
-				name: { contains: name, mode: "insensitive" },
+			where: name
+				? {
+						name: {
+							contains: name,
+							mode: "insensitive",
+						},
+					}
+				: undefined,
+			include: {
+				images: true,
+				categories: {
+					include: {
+						ProductCategory: {
+							select: {
+								category: {
+									select: {
+										id: true,
+										name: true,
+									},
+								},
+							},
+						},
+					},
+				},
 			},
-			take: 10,
 			orderBy: {
 				name: "asc",
-			},
-			select: {
-				id: true,
-				name: true,
 			},
 		});
 
