@@ -1,4 +1,5 @@
 import { ProductForm } from "@/components/product-form";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	Table,
@@ -8,7 +9,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import prisma from "@/lib/prisma";
+import { getProducts } from "@/queries/products";
 import { Package } from "lucide-react";
 import type { JSX } from "react";
 
@@ -17,11 +18,7 @@ import type { JSX } from "react";
  * @returns {JSX.Element} Página com tabela de produtos
  */
 export default async function ProductsPage(): Promise<JSX.Element> {
-	const products = await prisma.product.findMany({
-		include: {
-			images: true,
-		},
-	});
+	const products = await getProducts();
 
 	return (
 		<div className="space-y-6 p-6 w-full">
@@ -42,8 +39,12 @@ export default async function ProductsPage(): Promise<JSX.Element> {
 						<Table>
 							<TableHeader>
 								<TableRow>
+									<TableHead className="w-[10%]">Imagem</TableHead>
 									<TableHead className="w-[30%]">Nome</TableHead>
 									<TableHead className="w-[15%] text-right">Preço</TableHead>
+									<TableHead className="w-[15%] text-right">
+										Categorias
+									</TableHead>
 									<TableHead className="w-[10%] text-right">Ações</TableHead>
 								</TableRow>
 							</TableHeader>
@@ -60,6 +61,14 @@ export default async function ProductsPage(): Promise<JSX.Element> {
 								) : (
 									products.map((product) => (
 										<TableRow key={product.id}>
+											<TableCell>
+												<Avatar className="w-10 h-10">
+													<AvatarImage src={product.images[0]?.imageUrl} />
+													<AvatarFallback>
+														{product.name.charAt(0)}
+													</AvatarFallback>
+												</Avatar>
+											</TableCell>
 											<TableCell className="font-medium">
 												{product.name}
 											</TableCell>
@@ -68,6 +77,11 @@ export default async function ProductsPage(): Promise<JSX.Element> {
 													style: "currency",
 													currency: "BRL",
 												}).format(Number(product.price))}
+											</TableCell>
+											<TableCell className="text-right">
+												{product.categories
+													.map((category) => category.name)
+													.join(", ")}
 											</TableCell>
 											<TableCell className="text-right">
 												<ProductForm

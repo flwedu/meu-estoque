@@ -1,14 +1,18 @@
 import prisma from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 
-export async function getProducts() {
-	const products = await prisma.product.findMany();
-	return products;
-}
+type ProductOrderBy = Prisma.ProductOrderByWithRelationInput;
 
-export async function getProductsWithStock() {
+export async function getProducts(
+	take = 10,
+	orderBy: ProductOrderBy = { name: "asc" },
+) {
 	const products = await prisma.product.findMany({
-		where: {
-			Movement: { some: { quantity: { gt: 0 } } },
+		take,
+		orderBy,
+		include: {
+			images: true,
+			categories: true,
 		},
 	});
 	return products;
