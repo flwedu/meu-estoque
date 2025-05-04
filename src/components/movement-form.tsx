@@ -33,6 +33,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import { ProductsSearchCombobox } from "./products-search-combobox";
+import { QueryError } from "@/lib/error";
 
 /**
  * Schema de validação para o formulário de movimentações
@@ -92,9 +93,11 @@ export function MovementForm({ onOpenChange }: MovementFormProps): JSX.Element {
 				}),
 			});
 
-			if (!response.ok) {
-				throw new Error("Erro ao registrar movimentação");
-			}
+			if (!response.ok)
+				throw new QueryError(
+					"Erro ao registrar movimentação",
+					await response.json(),
+				);
 
 			toast.success("Movimentação registrada com sucesso");
 			form.reset();
@@ -102,12 +105,12 @@ export function MovementForm({ onOpenChange }: MovementFormProps): JSX.Element {
 			onOpenChange?.(false);
 			router.refresh();
 		} catch (error) {
-			console.error(error);
-			toast.error(
-				error instanceof Error
-					? error.message
-					: "Erro ao registrar movimentação",
-			);
+			if (error instanceof QueryError) {
+				toast.error(error.message);
+			} else {
+				console.error(error);
+				toast.error("Erro ao registrar movimentação");
+			}
 		}
 	}
 

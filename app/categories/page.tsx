@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CategoriesTable } from "../../src/components/categories-table";
+import { CategoriesTable } from "@/components/categories-table";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 /**
  * Página principal de categorias
- * @returns {JSX.Element} Componente da página de categorias
+ * @returns {Promise<JSX.Element>} Componente da página de categorias
  */
 export default async function CategoriesPage() {
 	const categories = await getCategories();

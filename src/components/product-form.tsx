@@ -27,6 +27,7 @@ import { toast } from "sonner";
 import * as z from "zod";
 import { CategoriesSearchCombobox } from "./categories-search-combobox";
 import type { Product } from "@/types";
+import { QueryError } from "@/lib/error";
 
 /**
  * Schema de validação para o formulário de produtos
@@ -63,7 +64,7 @@ export function ProductForm({
 	product,
 	mode = "create",
 	onOpenChange,
-}: ProductFormProps): JSX.Element {
+}: ProductFormProps) {
 	const [open, setOpen] = useState(false);
 	const router = useRouter();
 
@@ -106,10 +107,11 @@ export function ProductForm({
 			);
 
 			if (!response.ok) {
-				throw new Error(
+				throw new QueryError(
 					mode === "edit"
 						? "Erro ao atualizar produto"
 						: "Erro ao cadastrar produto",
+					await response.json(),
 				);
 			}
 
@@ -124,12 +126,16 @@ export function ProductForm({
 			// Força um refresh da página para atualizar a tabela
 			router.refresh();
 		} catch (error) {
-			console.error(error);
-			toast.error(
-				mode === "edit"
-					? "Erro ao atualizar produto"
-					: "Erro ao cadastrar produto",
-			);
+			if (error instanceof QueryError) {
+				toast.error(error.message);
+			} else {
+				console.error(error);
+				toast.error(
+					mode === "edit"
+						? "Erro ao atualizar produto"
+						: "Erro ao cadastrar produto",
+				);
+			}
 		}
 	}
 

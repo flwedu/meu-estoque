@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CategoryForm } from "../../../../src/components/category-form";
+import { CategoryForm } from "@/components/category-form";
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 

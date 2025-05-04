@@ -9,6 +9,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import { QueryError } from "@/lib/error";
 import type { Category } from "@/types";
 import { Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -41,12 +42,21 @@ export function CategoriesTable({
 				method: "DELETE",
 			});
 
-			if (!response.ok) throw new Error();
+			if (!response.ok)
+				throw new QueryError(
+					"Erro ao remover categoria",
+					await response.json(),
+				);
 
 			toast.success("Categoria removida com sucesso");
 			router.refresh();
 		} catch (error) {
-			toast.error("Erro ao remover categoria");
+			if (error instanceof QueryError) {
+				toast.error(error.message);
+			} else {
+				console.error(error);
+				toast.error("Erro ao remover categoria");
+			}
 		}
 	};
 

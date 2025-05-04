@@ -47,7 +47,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 	} catch (error) {
 		console.error(error);
 		return NextResponse.json(
-			{ error: "Erro ao criar produto" },
+			{ message: "Erro ao criar produto", details: error },
 			{ status: 500 },
 		);
 	}

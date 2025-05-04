@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CategoryForm } from "../../../src/components/category-form";
+import { CategoryForm } from "@/components/category-form";
 
 export const metadata: Metadata = {
 	title: "Nova Categoria | Meu Estoque",

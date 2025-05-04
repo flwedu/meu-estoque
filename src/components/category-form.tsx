@@ -10,6 +10,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { QueryError } from "@/lib/error";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -62,7 +63,13 @@ export function CategoryForm({ initialData, categoryId }: CategoryFormProps) {
 				body: JSON.stringify(data),
 			});
 
-			if (!response.ok) throw new Error();
+			if (!response.ok)
+				throw new QueryError(
+					categoryId
+						? "Erro ao atualizar categoria"
+						: "Erro ao criar categoria",
+					await response.json(),
+				);
 
 			toast.success(
 				categoryId
@@ -72,9 +79,16 @@ export function CategoryForm({ initialData, categoryId }: CategoryFormProps) {
 			router.push("/categories");
 			router.refresh();
 		} catch (error) {
-			toast.error(
-				categoryId ? "Erro ao atualizar categoria" : "Erro ao criar categoria",
-			);
+			if (error instanceof QueryError) {
+				toast.error(error.message);
+			} else {
+				console.error(error);
+				toast.error(
+					categoryId
+						? "Erro ao atualizar categoria"
+						: "Erro ao criar categoria",
+				);
+			}
 		}
 	};
 
