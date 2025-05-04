@@ -4,17 +4,23 @@ Sistema desenvolvido com Next.js, PostgreSQL e Prisma para gerenciamento de esto
 
 ## 🚀 Tecnologias
 
-- Next.js 14
+- Next.js 15
 - TypeScript
 - Tailwind CSS
 - PostgreSQL
 - Prisma ORM
+- Shadcn UI
+- Lucide
+- React Hook Form
+- Zod
+- Vitest
+- Pnpm
 
 ## 📋 Pré-requisitos
 
 - Node.js 18+
 - Docker e Docker Compose
-- npm ou yarn
+- npm, pnpm ou yarn
 
 ## 🔧 Instalação
 
@@ -28,14 +34,25 @@ cd meu-estoque
 2. Instale as dependências:
 
 ```bash
+# Pnpm
+pnpm install
+
+# NPM
 npm install
+
+# Yarn
+yarn install
 ```
 
 3. Configure as variáveis de ambiente:
 
+Primeiro, crie o arquivo `.env` a partir do exemplo:
+
 ```bash
 cp .env.example .env
 ```
+
+Dentro do arquivo `.env`, configure as variáveis de ambiente necessárias.
 
 4. Inicie o banco de dados PostgreSQL:
 
@@ -46,20 +63,27 @@ docker-compose up -d
 5. Execute as migrações do Prisma:
 
 ```bash
-npx prisma migrate dev
+pnpm prisma migrate dev
 ```
 
 6. Inicie o servidor de desenvolvimento:
 
 ```bash
+# Pnpm
+pnpm dev
+
+# NPM
 npm run dev
+
+# Yarn
+yarn dev
 ```
 
 O sistema estará disponível em `http://localhost:3000`
 
 ## 📦 Estrutura do Projeto
 
-- `/src/app` - Rotas e páginas da aplicação
+- `/app` - Rotas e páginas da aplicação
 - `/src/components` - Componentes React reutilizáveis
 - `/src/lib` - Utilitários e configurações
 - `/prisma` - Schema e migrações do banco de dados
@@ -69,7 +93,14 @@ O sistema estará disponível em `http://localhost:3000`
 Para executar os testes:
 
 ```bash
+# Pnpm
+pnpm test
+
+# NPM
 npm test
+
+# Yarn
+yarn test
 ```
 
 ## 📝 Licença
