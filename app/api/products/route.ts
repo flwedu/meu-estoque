@@ -26,3 +26,51 @@ export async function POST(request: Request): Promise<NextResponse> {
 		);
 	}
 }
+
+/**
+ * Função que busca todos os produtos
+ * @param {Request} request - Requisição HTTP
+ * @returns {Promise<NextResponse>} Resposta HTTP
+ */
+export async function GET(request: Request): Promise<NextResponse> {
+	try {
+		const { searchParams } = new URL(request.url);
+		const name = searchParams.get("name") ?? "";
+
+		if (!name) {
+			const products = await prisma.product.findMany({
+				take: 10,
+				orderBy: {
+					name: "asc",
+				},
+				select: {
+					id: true,
+					name: true,
+				},
+			});
+			return NextResponse.json(products);
+		}
+
+		const products = await prisma.product.findMany({
+			where: {
+				name: { contains: name, mode: "insensitive" },
+			},
+			take: 10,
+			orderBy: {
+				name: "asc",
+			},
+			select: {
+				id: true,
+				name: true,
+			},
+		});
+
+		return NextResponse.json(products);
+	} catch (error) {
+		console.error(error);
+		return NextResponse.json(
+			{ error: "Erro ao buscar produtos" },
+			{ status: 500 },
+		);
+	}
+}

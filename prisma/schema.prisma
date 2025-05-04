@@ -70,7 +70,7 @@ model User {
 
 model Stock {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  productId String   @map("product_id") @db.Uuid
+  productId String   @unique @map("product_id") @db.Uuid
   quantity  Int
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz
