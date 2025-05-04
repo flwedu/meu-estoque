@@ -23,6 +23,11 @@ const sidebarItems = [
 		icon: Package,
 	},
 	{
+		title: "Categorias",
+		href: "/categories",
+		icon: Boxes,
+	},
+	{
 		title: "Movimentações",
 		href: "/movements",
 		icon: ArrowLeftRight,
