@@ -17,12 +17,7 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown, X } from "lucide-react";
 import { type JSX, useEffect, useState } from "react";
 import { Badge } from "./ui/badge";
-
-interface Category {
-	id: string;
-	name: string;
-	icon: string;
-}
+import type { Category } from "@/types";
 
 interface CategoriesSearchComboboxProps {
 	value: string[];
@@ -53,6 +48,10 @@ export function CategoriesSearchCombobox({
 
 		fetchCategories();
 	}, []);
+
+	const handleClickRemoveCategory = (categoryId: string) => {
+		onChange(value.filter((id) => id !== categoryId));
+	};
 
 	const selectedCategories = categories.filter((category) =>
 		value.includes(category.id),
@@ -119,7 +118,7 @@ export function CategoriesSearchCombobox({
 							<button
 								type="button"
 								onClick={() => {
-									onChange(value.filter((id) => id !== category.id));
+									handleClickRemoveCategory(category.id);
 								}}
 								className="ml-1 rounded-full outline-none focus:ring-2 focus:ring-ring ring-offset-background focus:ring-offset-2"
 							>

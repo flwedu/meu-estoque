@@ -4,6 +4,7 @@
 export interface Category {
 	id: string;
 	name: string;
+	icon?: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -17,6 +18,7 @@ export interface Product {
 	price: number;
 	createdAt: Date;
 	updatedAt: Date;
+	categories: Category[];
 }
 
 /**

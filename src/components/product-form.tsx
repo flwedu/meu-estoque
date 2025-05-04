@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import { CategoriesSearchCombobox } from "./categories-search-combobox";
+import type { Product } from "@/types";
 
 /**
  * Schema de validação para o formulário de produtos
@@ -42,12 +43,7 @@ interface ProductFormProps {
 	/**
 	 * Produto a ser editado
 	 */
-	product?: {
-		id: string;
-		name: string;
-		price: number;
-		categories?: { id: string }[];
-	};
+	product?: Product;
 	/**
 	 * Tipo de ação do formulário
 	 */
