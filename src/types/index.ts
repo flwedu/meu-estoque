@@ -61,3 +61,15 @@ export interface Stock {
 	createdAt: Date;
 	updatedAt: Date;
 }
+
+/**
+ * Interface que representa um movimento de estoque
+ */
+export interface Movement {
+	id: string;
+	productId: string;
+	quantity: number;
+	createdAt: Date;
+	updatedAt: Date;
+	product: Product;
+}

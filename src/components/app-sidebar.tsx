@@ -24,7 +24,7 @@ const sidebarItems = [
 	},
 	{
 		title: "Movimentações",
-		href: "/moviment",
+		href: "/movements",
 		icon: Boxes,
 	},
 ];

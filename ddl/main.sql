@@ -44,6 +44,14 @@ create table meu_estoque.stock (
     updated_at timestamp with time zone default now()
 );
 
+create table meu_estoque.movements (
+    id uuid primary key default gen_random_uuid(),
+    product_id uuid not null references meu_estoque.products(id),
+    quantity int not null,
+    created_at timestamp with time zone default now(),
+    updated_at timestamp with time zone default now()
+);
+
 -- Índices para melhorar a performance
 create index idx_product_categories_product_id on meu_estoque.product_categories(product_id);
 create index idx_product_categories_category_id on meu_estoque.product_categories(category_id);

@@ -7,24 +7,15 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import type { Product } from "@/types";
 import { Package } from "lucide-react";
-
-/**
- * Interface que representa um produto
- */
-interface Product {
-	id: string;
-	name: string;
-	description: string;
-	quantity: number;
-	price: number;
-}
+import type { JSX } from "react";
 
 /**
  * Página que exibe a lista de produtos cadastrados
  * @returns {JSX.Element} Página com tabela de produtos
  */
-export default function ProductsPage() {
+export default function ProductsPage(): JSX.Element {
 	// TODO: Buscar produtos do banco de dados
 	const products: Product[] = [];
 
@@ -53,10 +44,6 @@ export default function ProductsPage() {
 							<TableHeader>
 								<TableRow>
 									<TableHead className="w-[30%]">Nome</TableHead>
-									<TableHead className="w-[30%]">Descrição</TableHead>
-									<TableHead className="w-[15%] text-right">
-										Quantidade
-									</TableHead>
 									<TableHead className="w-[15%] text-right">Preço</TableHead>
 									<TableHead className="w-[10%] text-right">Ações</TableHead>
 								</TableRow>
@@ -76,10 +63,6 @@ export default function ProductsPage() {
 										<TableRow key={product.id}>
 											<TableCell className="font-medium">
 												{product.name}
-											</TableCell>
-											<TableCell>{product.description}</TableCell>
-											<TableCell className="text-right">
-												{product.quantity}
 											</TableCell>
 											<TableCell className="text-right">
 												{new Intl.NumberFormat("pt-BR", {
