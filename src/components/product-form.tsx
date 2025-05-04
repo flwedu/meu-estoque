@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Package } from "lucide-react";
+import { Package, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { JSX } from "react";
 import { useState } from "react";
@@ -36,19 +36,48 @@ const productFormSchema = z.object({
 
 type ProductFormValues = z.infer<typeof productFormSchema>;
 
+interface ProductFormProps {
+	/**
+	 * Produto a ser editado
+	 */
+	product?: {
+		id: string;
+		name: string;
+		price: number;
+	};
+	/**
+	 * Tipo de ação do formulário
+	 */
+	mode?: "create" | "edit";
+	/**
+	 * Função chamada quando o diálogo é fechado
+	 */
+	onOpenChange?: (open: boolean) => void;
+}
+
 /**
- * Componente que renderiza o formulário de cadastro de produtos
+ * Componente que renderiza o formulário de cadastro/edição de produtos
+ * @param {ProductFormProps} props - Propriedades do componente
  * @returns {JSX.Element} Formulário de produtos
  */
-export function ProductForm(): JSX.Element {
+export function ProductForm({
+	product,
+	mode = "create",
+	onOpenChange,
+}: ProductFormProps): JSX.Element {
 	const [open, setOpen] = useState(false);
 	const router = useRouter();
 
 	const form = useForm<ProductFormValues>({
 		resolver: zodResolver(productFormSchema),
 		defaultValues: {
-			name: "",
-			price: "",
+			name: product?.name ?? "",
+			price: product?.price
+				? new Intl.NumberFormat("pt-BR", {
+						style: "currency",
+						currency: "BRL",
+					}).format(product.price)
+				: "",
 		},
 	});
 
@@ -58,43 +87,77 @@ export function ProductForm(): JSX.Element {
 	 */
 	async function onSubmit(data: ProductFormValues) {
 		try {
-			const response = await fetch("/api/products", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
+			const price = Number(
+				data.price.replace(/[^\d,-]/g, "").replace(",", "."),
+			);
+
+			const response = await fetch(
+				mode === "edit" ? `/api/products/${product?.id}` : "/api/products",
+				{
+					method: mode === "edit" ? "PUT" : "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						...data,
+						price,
+					}),
 				},
-				body: JSON.stringify({
-					...data,
-					price: Number(data.price.replace(",", ".")),
-				}),
-			});
+			);
 
 			if (!response.ok) {
-				throw new Error("Erro ao cadastrar produto");
+				throw new Error(
+					mode === "edit"
+						? "Erro ao atualizar produto"
+						: "Erro ao cadastrar produto",
+				);
 			}
 
-			toast.success("Produto cadastrado com sucesso");
+			toast.success(
+				mode === "edit"
+					? "Produto atualizado com sucesso"
+					: "Produto cadastrado com sucesso",
+			);
 			form.reset();
 			setOpen(false);
+			onOpenChange?.(false);
 			// Força um refresh da página para atualizar a tabela
 			router.refresh();
 		} catch (error) {
 			console.error(error);
-			toast.error("Erro ao cadastrar produto");
+			toast.error(
+				mode === "edit"
+					? "Erro ao atualizar produto"
+					: "Erro ao cadastrar produto",
+			);
 		}
 	}
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
+		<Dialog
+			open={open}
+			onOpenChange={(value) => {
+				setOpen(value);
+				onOpenChange?.(value);
+			}}
+		>
 			<DialogTrigger asChild>
-				<Button className="bg-primary hover:bg-primary/90">
-					<Package className="mr-2 w-4 h-4" />
-					Novo Produto
-				</Button>
+				{mode === "edit" ? (
+					<Button variant="ghost" size="icon">
+						<Pencil className="w-4 h-4" />
+					</Button>
+				) : (
+					<Button className="bg-primary hover:bg-primary/90">
+						<Package className="mr-2 w-4 h-4" />
+						Novo Produto
+					</Button>
+				)}
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>
-					<DialogTitle>Novo Produto</DialogTitle>
+					<DialogTitle>
+						{mode === "edit" ? "Editar Produto" : "Novo Produto"}
+					</DialogTitle>
 				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -137,7 +200,7 @@ export function ProductForm(): JSX.Element {
 							)}
 						/>
 						<Button type="submit" className="w-full">
-							Cadastrar
+							{mode === "edit" ? "Atualizar" : "Cadastrar"}
 						</Button>
 					</form>
 				</Form>

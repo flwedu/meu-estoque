@@ -70,12 +70,14 @@ export default async function ProductsPage(): Promise<JSX.Element> {
 												}).format(Number(product.price))}
 											</TableCell>
 											<TableCell className="text-right">
-												<button
-													type="button"
-													className="text-primary hover:underline"
-												>
-													Editar
-												</button>
+												<ProductForm
+													mode="edit"
+													product={{
+														id: product.id,
+														name: product.name,
+														price: Number(product.price),
+													}}
+												/>
 											</TableCell>
 										</TableRow>
 									))
