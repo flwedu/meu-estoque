@@ -4,6 +4,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
+import type { JSX } from "react";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,7 +24,7 @@ export default function RootLayout({
 	children,
 }: {
 	children: React.ReactNode;
-}) {
+}): JSX.Element {
 	return (
 		<html lang="pt-BR" suppressHydrationWarning>
 			<body className={inter.className}>
@@ -32,6 +34,7 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
+					<Toaster />
 					<SidebarProvider>
 						<div className="flex w-full min-h-screen">
 							<AppSidebar />

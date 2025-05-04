@@ -1,3 +1,4 @@
+import { ProductForm } from "@/components/product-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	Table,
@@ -26,12 +27,7 @@ export default async function ProductsPage(): Promise<JSX.Element> {
 		<div className="space-y-6 p-6 w-full">
 			<div className="flex justify-between items-center">
 				<h1 className="font-bold text-3xl">Produtos</h1>
-				<button
-					type="button"
-					className="bg-primary hover:bg-primary/90 px-4 py-2 rounded-md text-primary-foreground"
-				>
-					Novo Produto
-				</button>
+				<ProductForm />
 			</div>
 
 			<Card className="w-full">
