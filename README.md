@@ -27,7 +27,7 @@ Sistema desenvolvido com Next.js, PostgreSQL e Prisma para gerenciamento de esto
 1. Clone o repositório:
 
 ```bash
-git clone [URL_DO_REPOSITORIO]
+git clone https://github.com/flwedu/meu-estoque
 cd meu-estoque
 ```
 
