@@ -17,6 +17,9 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { QueryError } from "@/lib/error";
+import type { getProducts } from "@/queries/products";
+import { productFormSchema } from "@/schemas/product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Package, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -24,19 +27,8 @@ import type { JSX } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import * as z from "zod";
+import type { z } from "zod";
 import { CategoriesSearchCombobox } from "./categories-search-combobox";
-import type { Product } from "@/types";
-import { QueryError } from "@/lib/error";
-
-/**
- * Schema de validação para o formulário de produtos
- */
-const productFormSchema = z.object({
-	name: z.string().min(1, "O nome do produto é obrigatório"),
-	price: z.string().min(1, "O preço é obrigatório"),
-	categoryIds: z.array(z.string()).min(1, "Selecione pelo menos uma categoria"),
-});
 
 type ProductFormValues = z.infer<typeof productFormSchema>;
 
@@ -44,7 +36,7 @@ interface ProductFormProps {
 	/**
 	 * Produto a ser editado
 	 */
-	product?: Product;
+	product?: Awaited<ReturnType<typeof getProducts>>[number];
 	/**
 	 * Tipo de ação do formulário
 	 */
@@ -76,9 +68,10 @@ export function ProductForm({
 				? new Intl.NumberFormat("pt-BR", {
 						style: "currency",
 						currency: "BRL",
-					}).format(product.price)
+					}).format(Number(product.price))
 				: "",
-			categoryIds: product?.categories?.map((category) => category.id) ?? [],
+			categoryIds:
+				product?.categories?.map(({ categoryId }) => categoryId) ?? [],
 		},
 	});
 

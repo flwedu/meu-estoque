@@ -9,28 +9,26 @@ datasource db {
 }
 
 model Category {
-  id              String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name            String            @db.VarChar(255)
-  icon            String            @db.VarChar(255)
-  createdAt       DateTime          @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt       DateTime          @default(now()) @map("updated_at") @db.Timestamptz
-  products        Product[]         @relation("ProductCategory")
-  ProductCategory ProductCategory[]
+  id        String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String            @db.VarChar(255)
+  icon      String            @db.VarChar(255)
+  createdAt DateTime          @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime          @default(now()) @map("updated_at") @db.Timestamptz
+  products  ProductCategory[]
 
   @@map("categories")
 }
 
 model Product {
-  id              String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name            String            @db.VarChar(255)
-  price           Decimal           @db.Decimal(10, 2)
-  createdAt       DateTime          @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt       DateTime          @default(now()) @map("updated_at") @db.Timestamptz
-  images          ProductImage[]
-  categories      Category[]        @relation("ProductCategory")
-  stock           Stock[]
-  Movement        Movement[]
-  ProductCategory ProductCategory[]
+  id         String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String            @db.VarChar(255)
+  price      Decimal           @db.Decimal(10, 2)
+  createdAt  DateTime          @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt  DateTime          @default(now()) @map("updated_at") @db.Timestamptz
+  images     ProductImage[]
+  categories ProductCategory[]
+  stock      Stock[]
+  Movement   Movement[]
 
   @@map("products")
 }
@@ -48,7 +46,6 @@ model ProductImage {
 }
 
 model ProductCategory {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   productId  String   @map("product_id") @db.Uuid
   categoryId String   @map("category_id") @db.Uuid
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
@@ -56,8 +53,7 @@ model ProductCategory {
   product    Product  @relation(fields: [productId], references: [id])
   category   Category @relation(fields: [categoryId], references: [id])
 
-  @@index([productId])
-  @@index([categoryId])
+  @@id([productId, categoryId])
   @@map("product_categories")
 }
 
@@ -69,7 +65,6 @@ model User {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz
 
-  @@index([email])
   @@map("users")
 }
 
@@ -81,7 +76,6 @@ model Stock {
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz
   product   Product  @relation(fields: [productId], references: [id])
 
-  @@index([productId])
   @@map("stock")
 }
 
@@ -93,6 +87,5 @@ model Movement {
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz
   product   Product  @relation(fields: [productId], references: [id])
 
-  @@index([productId])
   @@map("movements")
 }

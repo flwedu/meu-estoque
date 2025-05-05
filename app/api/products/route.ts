@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import type { ProductFormOutput } from "@/schemas/product";
 import { NextResponse } from "next/server";
 
 /**
@@ -8,18 +9,16 @@ import { NextResponse } from "next/server";
  */
 export async function POST(request: Request): Promise<NextResponse> {
 	try {
-		const body = await request.json();
+		const body = (await request.json()) as ProductFormOutput;
 
 		const product = await prisma.product.create({
 			data: {
 				name: body.name,
 				price: body.price,
 				categories: {
-					create: body.categoryIds.map((categoryId: string) => ({
+					create: body.categoryIds.map((categoryId) => ({
 						category: {
-							connect: {
-								id: categoryId,
-							},
+							connect: { id: categoryId },
 						},
 					})),
 				},
@@ -28,16 +27,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 				images: true,
 				categories: {
 					include: {
-						ProductCategory: {
-							select: {
-								category: {
-									select: {
-										id: true,
-										name: true,
-									},
-								},
-							},
-						},
+						category: true,
 					},
 				},
 			},
@@ -76,16 +66,7 @@ export async function GET(request: Request): Promise<NextResponse> {
 				images: true,
 				categories: {
 					include: {
-						ProductCategory: {
-							select: {
-								category: {
-									select: {
-										id: true,
-										name: true,
-									},
-								},
-							},
-						},
+						category: true,
 					},
 				},
 			},

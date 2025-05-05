@@ -12,7 +12,11 @@ export async function getProducts(
 		orderBy,
 		include: {
 			images: true,
-			categories: true,
+			categories: {
+				include: {
+					category: true,
+				},
+			},
 		},
 	});
 	return products;

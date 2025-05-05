@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import type { ProductFormOutput } from "@/schemas/product";
+import { type NextRequest, NextResponse } from "next/server";
 
 /**
  * Função que atualiza um produto
@@ -8,11 +9,11 @@ import { NextResponse } from "next/server";
  * @returns {Promise<NextResponse>} Resposta HTTP com o produto atualizado
  */
 export async function PUT(
-	request: Request,
+	request: NextRequest,
 	{ params }: { params: { id: string } },
 ): Promise<NextResponse> {
 	try {
-		const body = await request.json();
+		const body = (await request.json()) as ProductFormOutput;
 
 		// Primeiro, remove todas as categorias existentes
 		await prisma.productCategory.deleteMany({
@@ -30,7 +31,7 @@ export async function PUT(
 				name: body.name,
 				price: body.price,
 				categories: {
-					create: body.categoryIds.map((categoryId: string) => ({
+					create: body.categoryIds.map((categoryId) => ({
 						category: {
 							connect: {
 								id: categoryId,
@@ -43,16 +44,7 @@ export async function PUT(
 				images: true,
 				categories: {
 					include: {
-						ProductCategory: {
-							select: {
-								category: {
-									select: {
-										id: true,
-										name: true,
-									},
-								},
-							},
-						},
+						category: true,
 					},
 				},
 			},

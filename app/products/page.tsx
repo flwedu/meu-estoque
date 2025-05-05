@@ -80,21 +80,14 @@ export default async function ProductsPage(): Promise<JSX.Element> {
 												}).format(Number(product.price))}
 											</TableCell>
 											<TableCell className="text-right">
-												{product.categories.map(({ id, name }) => (
-													<Badge key={id} variant="outline">
-														{name}
+												{product.categories.map(({ category }) => (
+													<Badge key={category.id} variant="outline">
+														{category.name}
 													</Badge>
 												))}
 											</TableCell>
 											<TableCell className="text-right">
-												<ProductForm
-													mode="edit"
-													product={{
-														id: product.id,
-														name: product.name,
-														price: Number(product.price),
-													}}
-												/>
+												<ProductForm mode="edit" product={product} />
 											</TableCell>
 										</TableRow>
 									))
