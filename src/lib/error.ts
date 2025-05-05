@@ -1,7 +1,7 @@
-export class QueryError extends Error {
+export class QueryError<T> extends Error {
 	constructor(
 		message: string,
-		public details: any,
+		public details: T,
 	) {
 		super(message);
 	}

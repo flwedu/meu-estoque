@@ -11,7 +11,7 @@ datasource db {
 model Category {
   id        String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String            @db.VarChar(255)
-  icon      String            @db.VarChar(255)
+  icon      String?           @db.VarChar(255)
   createdAt DateTime          @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime          @default(now()) @map("updated_at") @db.Timestamptz
   products  ProductCategory[]

@@ -19,7 +19,7 @@ import * as z from "zod";
 
 const categorySchema = z.object({
 	name: z.string().min(1, "Nome é obrigatório"),
-	icon: z.string().min(1, "Ícone é obrigatório"),
+	icon: z.string().optional(),
 });
 
 type CategoryFormValues = z.infer<typeof categorySchema>;

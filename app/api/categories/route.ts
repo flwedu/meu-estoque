@@ -33,10 +33,10 @@ export async function POST(request: Request) {
 		const body = await request.json();
 		const { name, icon } = body;
 
-		if (!name || !icon) {
+		if (!name) {
 			return NextResponse.json(
-				{ error: "Nome e ícone são obrigatórios" },
-				{ status: 400 }
+				{ error: "Nome é obrigatório" },
+				{ status: 400 },
 			);
 		}
 
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
 	} catch (error) {
 		return NextResponse.json(
 			{ error: "Erro ao criar categoria" },
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 }
