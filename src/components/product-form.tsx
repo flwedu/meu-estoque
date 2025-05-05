@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { QueryError } from "@/lib/error";
 import type { getProducts } from "@/queries/products";
-import { productFormSchema } from "@/schemas/product";
+import { type ProductFormOutput, productFormSchema } from "@/schemas/product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Package, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -79,7 +79,7 @@ export function ProductForm({
 	 * Função que é chamada quando o formulário é submetido
 	 * @param {ProductFormValues} data - Dados do formulário
 	 */
-	async function onSubmit(data: ProductFormValues) {
+	async function onSubmit(data: ProductFormOutput) {
 		try {
 			const price = Number(
 				data.price.replace(/[^\d,-]/g, "").replace(",", "."),
@@ -205,7 +205,7 @@ export function ProductForm({
 								<FormItem>
 									<FormLabel>Categorias</FormLabel>
 									<CategoriesSearchCombobox
-										value={field.value}
+										value={field.value ?? []}
 										onChange={field.onChange}
 									/>
 									<FormMessage />

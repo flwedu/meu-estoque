@@ -16,11 +16,12 @@ export async function POST(request: Request): Promise<NextResponse> {
 				name: body.name,
 				price: body.price,
 				categories: {
-					create: body.categoryIds.map((categoryId) => ({
-						category: {
-							connect: { id: categoryId },
-						},
-					})),
+					create:
+						body.categoryIds?.map((categoryId) => ({
+							category: {
+								connect: { id: categoryId },
+							},
+						})) ?? [],
 				},
 			},
 			include: {
