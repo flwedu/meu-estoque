@@ -8,38 +8,17 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { ArrowLeftRight, Boxes, Home, Package } from "lucide-react";
 import Link from "next/link";
 
-const sidebarItems = [
-	{
-		title: "Dashboard",
-		href: "/",
-		icon: Home,
-	},
-	{
-		title: "Produtos",
-		href: "/products",
-		icon: Package,
-	},
-	{
-		title: "Categorias",
-		href: "/categories",
-		icon: Boxes,
-	},
-	{
-		title: "Movimentações",
-		href: "/movements",
-		icon: ArrowLeftRight,
-	},
-	{
-		title: "Estoque",
-		href: "/stock",
-		icon: Boxes,
-	},
-];
+type AppSidebarProps = {
+	items: {
+		title: string;
+		href: string;
+		icon: React.ElementType;
+	}[];
+};
 
-export function AppSidebar() {
+export function AppSidebar({ items }: AppSidebarProps) {
 	return (
 		<Sidebar>
 			<SidebarContent>
@@ -47,7 +26,7 @@ export function AppSidebar() {
 					<SidebarGroupLabel>Meu Estoque</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{sidebarItems.map((item) => (
+							{items.map((item) => (
 								<SidebarMenuItem key={item.href}>
 									<SidebarMenuButton asChild>
 										<Link href={item.href}>

@@ -7,6 +7,7 @@ import { Inter } from "next/font/google";
 import type { JSX } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
+import { sidebarItems } from "@/sidebar-items";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,7 +38,7 @@ export default function RootLayout({
 					<Toaster />
 					<SidebarProvider>
 						<div className="flex w-full min-h-screen">
-							<AppSidebar />
+							<AppSidebar items={sidebarItems} />
 							<main className="flex-1">
 								<div className="flex items-center gap-4 px-4 border-b h-14 lg:h-[60px]">
 									<SidebarTrigger />
