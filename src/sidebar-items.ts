@@ -7,12 +7,13 @@ import {
 	Tag,
 	Truck,
 	Users,
+  List
 } from "lucide-react";
 
 export type SidebarItem = {
 	title: string;
 	href: string;
-	icon: React.ElementType;
+	icon?: React.ElementType;
 	children?: SidebarItem[];
 };
 
@@ -28,9 +29,9 @@ export const sidebarItems: SidebarItem[] = [
 		icon: Package,
 		children: [
 			{
-				title: "Produtos",
+				title: "Consultar",
 				href: "/products",
-				icon: Package,
+				icon: List,
 			},
 			{
 				title: "Categorias",
@@ -45,14 +46,9 @@ export const sidebarItems: SidebarItem[] = [
 		icon: Boxes,
 		children: [
 			{
-				title: "Estoque",
+				title: "Consultar",
 				href: "/stock",
-				icon: Boxes,
-			},
-			{
-				title: "Pedidos",
-				href: "/orders",
-				icon: Truck,
+				icon: List,
 			},
 			{
 				title: "Movimentações",
@@ -61,6 +57,11 @@ export const sidebarItems: SidebarItem[] = [
 			},
 		],
 	},
+  {
+    title: "Pedidos",
+    href: "/orders",
+    icon: Truck
+  },
 	{
 		title: "Vendas",
 		href: "/sales",

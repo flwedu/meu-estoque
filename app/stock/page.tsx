@@ -1,3 +1,4 @@
+import { MovementForm } from "@/components/movement-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	Table,
@@ -14,7 +15,13 @@ export default async function StockPage() {
 
 	return (
 		<div className="space-y-6 p-6 w-full">
-			<h1 className="font-bold text-3xl">Estoque</h1>
+			<div className="flex justify-between items-center">
+				<h1 className="max-w-[150px] sm:max-w-[300px] font-bold text-3xl truncate">
+					Estoque Atual
+				</h1>
+				<MovementForm />
+			</div>
+
 			<Card>
 				<CardHeader>
 					<CardTitle>Estoque por produto</CardTitle>
