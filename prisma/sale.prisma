@@ -1,12 +1,10 @@
 model Sale {
     id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    clientId   String     @map("client_id") @db.Uuid
-    client     Client     @relation(fields: [clientId], references: [id])
+    customerId String     @map("customer_id") @db.Uuid
+    customer   Customer   @relation(fields: [customerId], references: [id])
     createdAt  DateTime   @default(now()) @map("created_at") @db.Timestamptz
     updatedAt  DateTime   @default(now()) @map("updated_at") @db.Timestamptz
     items      SaleItem[]
-    userId     String     @map("user_id") @db.Uuid
-    user       User       @relation(fields: [userId], references: [id])
     totalPrice Decimal    @db.Decimal(10, 2)
 
     @@map("sales")
