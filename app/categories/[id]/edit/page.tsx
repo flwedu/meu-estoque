@@ -39,7 +39,7 @@ export default async function EditCategoryPage({
 				<CategoryForm
 					initialData={{
 						name: category.name,
-						icon: category.icon,
+						icon: category.icon ?? undefined,
 					}}
 					categoryId={category.id}
 				/>

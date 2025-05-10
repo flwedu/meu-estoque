@@ -2,23 +2,24 @@
 
 import { Button } from "@/components/ui/button";
 import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
 } from "@/components/ui/table";
 import { QueryError } from "@/lib/error";
-import type { Category } from "@/types";
+import type { getCategories } from "@/queries/categories";
 import { Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { JSX } from "react";
 import { toast } from "sonner";
 
+
 type CategoriesTableProps = {
-	categories: Category[];
+	categories: Awaited<ReturnType<typeof getCategories>>;
 };
 
 /**

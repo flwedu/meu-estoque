@@ -1,13 +1,12 @@
 import prisma from "@/lib/prisma";
 
 export async function getLastMovements(take = 10) {
-	const movements = await prisma.movement.findMany({
-		take,
-		include: {
-			product: true,
-		},
-	});
-	return movements;
+  return prisma.movement.findMany({
+    take,
+    include: {
+      product: true,
+    },
+  });
 }
 
 export async function getEntriesCount() {

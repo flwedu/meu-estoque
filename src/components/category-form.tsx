@@ -22,7 +22,7 @@ const categorySchema = z.object({
 	icon: z.string().optional(),
 });
 
-type CategoryFormValues = z.infer<typeof categorySchema>;
+type CategoryFormValues = z.input<typeof categorySchema>;
 
 interface CategoryFormProps {
 	initialData?: CategoryFormValues;
