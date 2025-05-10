@@ -1,6 +1,22 @@
-import { ArrowLeftRight, Boxes, Home, Package, Tag } from "lucide-react";
+import {
+	ArrowLeftRight,
+	Boxes,
+	Home,
+	Package,
+	ShoppingCart,
+	Tag,
+	Truck,
+	Users,
+} from "lucide-react";
 
-export const sidebarItems = [
+export type SidebarItem = {
+	title: string;
+	href: string;
+	icon: React.ElementType;
+	children?: SidebarItem[];
+};
+
+export const sidebarItems: SidebarItem[] = [
 	{
 		title: "Dashboard",
 		href: "/",
@@ -10,20 +26,49 @@ export const sidebarItems = [
 		title: "Produtos",
 		href: "/products",
 		icon: Package,
-	},
-	{
-		title: "Categorias",
-		href: "/categories",
-		icon: Tag,
-	},
-	{
-		title: "Movimentações",
-		href: "/movements",
-		icon: ArrowLeftRight,
+		children: [
+			{
+				title: "Produtos",
+				href: "/products",
+				icon: Package,
+			},
+			{
+				title: "Categorias",
+				href: "/categories",
+				icon: Tag,
+			},
+		],
 	},
 	{
 		title: "Estoque",
 		href: "/stock",
 		icon: Boxes,
+		children: [
+			{
+				title: "Estoque",
+				href: "/stock",
+				icon: Boxes,
+			},
+			{
+				title: "Pedidos",
+				href: "/orders",
+				icon: Truck,
+			},
+			{
+				title: "Movimentações",
+				href: "/movements",
+				icon: ArrowLeftRight,
+			},
+		],
+	},
+	{
+		title: "Vendas",
+		href: "/sales",
+		icon: ShoppingCart,
+	},
+	{
+		title: "Clientes",
+		href: "/customers",
+		icon: Users,
 	},
 ];
